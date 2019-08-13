@@ -1,4 +1,4 @@
-public class MultiThreadSequence {
+public class ThreadSequencePrinter {
     public static void main(String[] args) {
         LastThread lastThread = new LastThread();
         Thread t1 = new Thread(new Print1(lastThread), "Print1");
