@@ -3,7 +3,9 @@
 *.lo
 *.o
 *.obj
+https://medium.com/mongoaudit/how-to-enable-authentication-on-mongodb-b9e8a924efac
 
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
 # Precompiled Headers
 *.gch
 *.pch
