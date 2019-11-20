@@ -1,0 +1,60 @@
+package ThreadSequence;
+
+import java.util.Scanner;
+
+public class ThreadSequence extends Thread {
+
+	public static  int totalThread; 
+	public static  int totalItem ;
+
+	public final static Object object = new Object();
+
+	int threadSequence;
+	static volatile int count = 1;
+
+	public ThreadSequence(int threadSequence,int totalThread,int totalItem) {
+		this.threadSequence = threadSequence;
+		this.totalThread=totalThread;
+		this.totalItem=totalItem;
+	}
+
+	@Override
+	public void run() {
+
+		synchronized (object) {
+
+			while (count <= totalItem) {
+
+				if (count == threadSequence || (count % totalThread == threadSequence)
+						|| ((count % totalThread == 0) && (totalThread == threadSequence))) {
+
+					System.out.println("Thread " + this.threadSequence + " Item: " + " " + count++);
+
+					object.notifyAll();
+				} else {
+
+					try {
+						object.wait();
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		}
+
+	}
+
+	public static void main(String args[]) {
+		@SuppressWarnings("resource")
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("enter total number of Thread");
+		int totalThread = keyboard.nextInt();
+		System.out.println("enter total number of Item");
+		int totalItem = keyboard.nextInt();
+		 
+		for (int i = 1; i <= totalThread; i++) {
+			ThreadSequence thread = new ThreadSequence(i,totalThread,totalItem);
+			thread.start();
+		}
+
+	}
+}
