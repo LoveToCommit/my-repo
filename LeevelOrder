@@ -1,0 +1,96 @@
+package ThreadSequence;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class BinaryTree {
+	int data;
+	BinaryTree left, right;
+
+	BinaryTree(int item) {
+		data = item;
+		left = right = null;
+	}
+
+	public void setLeft(BinaryTree left) {
+		this.left = left;
+	}
+
+	public void setRight(BinaryTree right) {
+		this.right = right;
+	}
+}
+
+class BinaryTreeSoulution {
+	BinaryTreeSoulution root;
+
+	BinaryTree buildTree(int in[], int spiral[]) {
+		BinaryTree startNode1 = null;
+		return constructTree(startNode1, spiral, in, 0, in.length - 1);
+	}
+
+	BinaryTree constructTree(BinaryTree startNode1, int[] spiral, int[] inOrder, int start, int end) {
+
+		if (start > end)
+			return null;
+
+		if (start == end)
+			return new BinaryTree(inOrder[start]);
+
+		boolean found = false;
+		int index = 0;
+		for (int i = 0; i < spiral.length - 1; i++) {
+			int data = spiral[i];
+			for (int j = start; j < end; j++) {
+				if (data == inOrder[j]) {
+					startNode1 = new BinaryTree(data);
+					index = j;
+					found = true;
+					break;
+				}
+			}
+			if (found == true)
+				break;
+		}
+
+		startNode1.setLeft(constructTree(startNode1, spiral, inOrder, start, index - 1));
+		startNode1.setRight(constructTree(startNode1, spiral, inOrder, index + 1, end));
+
+		return startNode1;
+	}
+
+	void printInorder(BinaryTree Node1) {
+		if (Node1 == null)
+			return;
+		printInorder(Node1.left);
+		System.out.print(Node1.data + " ");
+		printInorder(Node1.right);
+	}
+
+	void printLevelOrder(BinaryTree root) {
+		Queue<BinaryTree> queue = new LinkedList<BinaryTree>();
+		queue.add(root);
+		while (!queue.isEmpty()) {
+			BinaryTree tempNode1 = queue.poll();
+			System.out.print(tempNode1.data + " ");
+
+			if (tempNode1.left != null) {
+				queue.add(tempNode1.left);
+			}
+
+			if (tempNode1.right != null) {
+				queue.add(tempNode1.right);
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		BinaryTreeSoulution tree = new BinaryTreeSoulution();
+		
+		int inorder[] = new int[] { 1,10,6,20,7,5,8 };
+		int spiralorder[] = new int[] { 20,10,5,8,7,6,1};
+		BinaryTree Node1 = tree.buildTree(inorder, spiralorder);
+
+		System.out.print("Level traversal  tree is ");
+		tree.printLevelOrder(Node1);
+	}
+}
